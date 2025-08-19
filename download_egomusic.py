@@ -32,14 +32,34 @@ def download_file(url, filename):
     
     print('\nDownload complete.')
 
+def unzip_file(filename, target_directory):
+
+    print(f'Unzipping {filename} to {target_directory}')
+
+    os.makedirs(target_directory, exist_ok=True)
+    with zipfile.ZipFile(filename, 'r') as zip_ref:
+        file_list = zip_ref.namelist()
+        total_files = len(file_list)
+        extracted_count = 0
+
+        for file_name in file_list:
+            extracted_count += 1
+
+            print(f'Extracting: {file_name} ({extracted_count}/{total_files})', end='\r')
+            sys.stdout.flush()
+
+            zip_ref.extract(file_name, target_directory)
+        
+        print('\nUnzipping complete.')
+    
+    os.remove(filename)
+    print(f'Zip file {filename} deleted.')
+
 # Download EgoMusic from Zenodo
 url = 'https://zenodo.org/records/16753794/files/EgoMusic.zip'
 filename = 'EgoMusic.zip'
 download_file(url, filename)
 
 # Unzip downloaded file and remove the zip file.
-target_directory = './egomusic/'
-with zipfile.ZipFile(filename, 'r') as zip_ref:
-    zip_ref.extractall(target_directory)
-    print(f'{filename} files extracted.')
-os.remove(filename)
+target_directory = '.'
+unzip_file(filename, target_directory)
