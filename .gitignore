@@ -209,3 +209,7 @@ __marimo__/
 # EgoMusic data set
 EgoMusic/
 egomusic/
+.DS_Store
+plot_sensors.py
+*.jpg
+input_audio_files.csv
