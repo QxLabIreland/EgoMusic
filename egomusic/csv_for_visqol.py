@@ -4,7 +4,7 @@ import os
 # VISQOL analysis for the audio files
 
 # Create a CSV file to list data for VISQOL analysis
-path_to_csv_file_audio = './input_audio_files.csv'
+path_to_csv_file_audio = './output/input_audio_files.csv'
 csv_file_audio = open(path_to_csv_file_audio, 'w')
 csv_file_audio_writer = csv.writer(csv_file_audio)
 
