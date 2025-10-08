@@ -13,7 +13,7 @@ header = ['reference', 'degraded']
 csv_file_audio_writer.writerow(header)
 
 # Analyse EgoMusic data
-path_to_egomusic = './egomusic/EgoMusic/'
+path_to_egomusic = './EgoMusic/'
 sessions = ['session-1-instruments-2', 'session-2-instruments-3', 'session-3-instruments-4']
 songs = ['amazing-grace', 'black-is-the-colour', 'the-house-of-the-rising-sun', 'wayfaring-stranger', 'whiskey-in-the-jar']
 aria_locs = ['aria-near', 'aria-mid', 'aria-far', 'aria-static']
@@ -25,14 +25,17 @@ for session in sessions:
     session_songs = [directory for directory in os.listdir(path_to_session) if directory.split('_')[0] in songs]
     
     for session_song in session_songs:
-        # Reference file is the reverberated mix
+        # Five 10-second reference files
         path_to_session_song = os.path.join(path_to_session, session_song)
-        path_to_refs = os.path.join(path_to_session_song, 'refs')
-        for fname in os.listdir(path_to_refs):
-            if 'mix_reverb.wav' in fname:
-                reference_file = fname
-        path_to_reference_audio = os.path.join(path_to_refs, reference_file)
-        abspath_to_reference_audio = os.path.abspath(path_to_reference_audio)
+        path_to_refs = os.path.join(path_to_session_song, 'refs', 'visqol_data')
+        path_to_reference_audios = [fname for fname in os.listdir(path_to_refs) if fname.endswith('.wav')]
+        path_to_reference_audios.sort()
+
+        # for fname in os.listdir(path_to_refs):
+        #     if 'mix_reverb.wav' in fname:
+        #         reference_file = fname
+        # path_to_reference_audio = os.path.join(path_to_refs, reference_file)
+        # abspath_to_reference_audio = os.path.abspath(path_to_reference_audio)
 
         for aria_loc in aria_locs:
             path_to_aria_loc = os.path.join(path_to_session_song, aria_loc)
@@ -45,6 +48,14 @@ for session in sessions:
                     if test_file.endswith('.wav'):
                         path_to_test_file = os.path.join(path_to_group, test_file)
                         abspath_to_test_file = os.path.abspath(path_to_test_file)
+
+                        # Check sample number
+                        sample_number = test_file.split('-')[-1]
+                        sample_number = int(sample_number.split('.')[0]) - 1
+
+                        # Path to reference
+                        path_to_reference_audio = os.path.join(path_to_refs, path_to_reference_audios[sample_number])
+                        abspath_to_reference_audio = os.path.abspath(path_to_reference_audio)
 
                         # Put absolute paths of reference and test files to CSV
                         csv_row = [abspath_to_reference_audio] + [abspath_to_test_file]
