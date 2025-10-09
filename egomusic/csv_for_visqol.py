@@ -13,7 +13,7 @@ header = ['reference', 'degraded']
 csv_file_audio_writer.writerow(header)
 
 # Analyse EgoMusic data
-path_to_egomusic = './EgoMusic/'
+path_to_egomusic = './data/EgoMusic/'
 sessions = ['session-1-instruments-2', 'session-2-instruments-3', 'session-3-instruments-4']
 songs = ['amazing-grace', 'black-is-the-colour', 'the-house-of-the-rising-sun', 'wayfaring-stranger', 'whiskey-in-the-jar']
 aria_locs = ['aria-near', 'aria-mid', 'aria-far', 'aria-static']
@@ -64,7 +64,8 @@ for session in sessions:
 # Close CSV file
 csv_file_audio.close()
 
-# # SEPARATED AUDIO 4 STEMS
+# VISQOL analysis for the audio files
+
 # path_to_tracks = "normalized/audio_for_separation/tracks/"
 # path_to_estimated_master = "normalized/audio_for_separation/estimated_master/htdemucs"
 # path_to_estimated_near = "normalized/audio_for_separation/estimated_near/htdemucs"

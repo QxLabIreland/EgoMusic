@@ -9,10 +9,10 @@ from scipy.io import wavfile
 sr = 44100
 
 # Save audio files to path
-path_to_output_audio = './egomusic/audio_for_separation/'
+path_to_output_audio = './data/audio_for_separation/'
 
 # Get the directory of EgoMusic songs
-path_to_egomusic = './egomusic/EgoMusic/'
+path_to_egomusic = './data/EgoMusic/'
 sessions = ['session-1-instruments-2', 'session-2-instruments-3', 'session-3-instruments-4']
 songs = ['amazing-grace', 'black-is-the-colour', 'the-house-of-the-rising-sun', 'wayfaring-stranger', 'whiskey-in-the-jar']
 aria_locs = ['aria-near', 'aria-mid', 'aria-far', 'aria-static']
@@ -127,6 +127,28 @@ for session in sessions:
                 path_to_aria_audio_output_fname = os.path.join(path_to_aria_audio_output, aria_audio_output_fname)
                 wavfile.write(path_to_aria_audio_output_fname, sr, float32_to_int16(aria_audio_snippet))
                 print(f'Wrote successfully to {path_to_aria_audio_output_fname}.')
+
+            # Obtain the tracks
+            path_to_reference_tracks = os.path.join(path_to_output_audio, 'tracks', f'{session_song}-{sample_number+1}')
+
+            # Create directory if it does not exists
+            if not os.path.exists(path_to_reference_tracks):
+                os.makedirs(path_to_reference_tracks)
+
+            # Iterate over the tracks
+            accompaniment_tracks = []   # These are the tracks without the vocals
+            for index, label in enumerate(temp_track_labels):
+                reference_track = temp_track_audios[index]
+                path_to_reference_track =os.path.join(path_to_reference_tracks, label + '.wav')
+                wavfile.write(path_to_reference_track, sr, float32_to_int16(reference_track))
+                print(f'Wrote sueccessfully to {path_to_reference_track}.')
+                if label != 'vocals':
+                    accompaniment_tracks.append(reference_track)
+            
+            accompaniment_track = np.mean(np.array(accompaniment_tracks), axis=0)    # Track without vocals
+            path_to_accompaniment_track = os.path.join(path_to_reference_tracks, 'no_vocals.wav')
+            wavfile.write(path_to_accompaniment_track, sr, float32_to_int16(accompaniment_track))
+            print(f'Wrote sueccessfully to {path_to_accompaniment_track}.')
 
             # Proceed to next sample. Stop if it reaches 5 samples
             sample_number += 1

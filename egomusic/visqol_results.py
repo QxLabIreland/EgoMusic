@@ -14,7 +14,7 @@ song_names = [fname.split('/')[-5].split('_')[0] for fname in test_fnames]
 aria_locs = [fname.split('/')[-4].split('-')[-1] for fname in test_fnames]
 beam_groups = [fname.split('/')[-2] for fname in test_fnames]
 
-# # VISQOL results in long format
+# VISQOL results in long format
 df_long = pd.DataFrame({
     'song': song_names,
     'location': aria_locs,

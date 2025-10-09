@@ -61,5 +61,5 @@ filename = 'EgoMusic.zip'
 download_file(url, filename)
 
 # Unzip downloaded file and remove the zip file.
-target_directory = '.'
+target_directory = './data/'
 unzip_file(filename, target_directory)

@@ -207,8 +207,10 @@ marimo/_lsp/
 __marimo__/
 
 # EgoMusic data set
-/EgoMusic/
+/data/EgoMusic/
+/data/audio_for_separation/
 .DS_Store
-/output/
+/output/input_audio_files.csv
+/output/results_audio_files.csv
 /audio_for_separation/
 /egomusic/plot_sensors.py

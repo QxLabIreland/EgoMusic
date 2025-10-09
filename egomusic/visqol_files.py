@@ -10,7 +10,7 @@ from scipy.io import wavfile
 sr = 48000
 
 # Get the directory of EgoMusic songs
-path_to_egomusic = './EgoMusic/'
+path_to_egomusic = './data/EgoMusic/'
 sessions = ['session-1-instruments-2', 'session-2-instruments-3', 'session-3-instruments-4']
 songs = ['amazing-grace', 'black-is-the-colour', 'the-house-of-the-rising-sun', 'wayfaring-stranger', 'whiskey-in-the-jar']
 aria_locs = ['aria-near', 'aria-mid', 'aria-far', 'aria-static']
