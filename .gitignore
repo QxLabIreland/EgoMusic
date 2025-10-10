@@ -212,5 +212,7 @@ __marimo__/
 .DS_Store
 /output/input_audio_files.csv
 /output/results_audio_files.csv
+/output/input_separated_files.csv
+/output/results_separated_files.csv
 /audio_for_separation/
 /egomusic/plot_sensors.py

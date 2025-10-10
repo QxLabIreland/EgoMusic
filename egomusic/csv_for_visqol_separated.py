@@ -30,23 +30,23 @@ for root, dirs, files in os.walk(path_to_ref_tracks):
 for path_to_wavfile in paths_to_wavfile:
     # This is the reference track for VISQOL
     abspath_ref_track = os.path.abspath(path_to_wavfile)
-    temp_label = path_to_wavfile.split('/')[-1]     # This is the name of the track
+    session_song_number = path_to_wavfile.split('/')[-2]
+    session_song = session_song_number[:-2]                     # Name of the song
+    sample_number = int(session_song_number.split('-')[-1])     # Sample number
+    temp_label = path_to_wavfile.split('/')[-1]                 # Name of the track
 
     # Change track labels to the demucs labels
     if temp_label == 'percussion.wav':
         label = 'drums.wav'
     elif temp_label == 'piano.wav' or temp_label == 'guitar.wav':
         label = 'other.wav'
-    elif temp_label == 'no_vocals.wav':
-        continue
     else:
         label = temp_label
-    song_label = path_to_wavfile.split('/')[-2] + '/' + label
 
     # Find the test track for each aria location
     for aria_loc in aria_locs:
-        path_to_estimated_folder = f'./data/audio_for_separation/estimated_{aria_loc}/htdemucs/'
-        path_to_estimated_track = os.path.join(path_to_estimated_folder, song_label)
+        path_to_estimated_folder = f'./data/audio_for_separation/estimated_{aria_loc}/htdemucs/{session_song}-{aria_loc}-{sample_number}/'
+        path_to_estimated_track = os.path.join(path_to_estimated_folder, label)
         abspath_estimated_track = os.path.abspath(path_to_estimated_track)
         
         # Write to csv file
