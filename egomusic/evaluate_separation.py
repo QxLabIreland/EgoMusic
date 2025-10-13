@@ -2,6 +2,7 @@ import os
 import numpy as np
 import librosa
 import csv
+import sounddevice as sd
 from fast_bss_eval import si_bss_eval_sources
 
 # Sampling rate
@@ -9,103 +10,103 @@ sr = 44100
 
 # Evaluation for the MUSDB data set
 
-# Track list of the MUSDB data set
-track_list_musdb = ['bass', 'drums', 'other', 'vocals']
+# # Track list of the MUSDB data set
+# track_list_musdb = ['bass', 'drums', 'other', 'vocals']
 
-# Load reference tracks from MUSDB
-path_to_reference_musdb = './data/audio_for_separation/full_musdb_tracks/'
-ref_tracks_musdb = []
-ref_labels_musdb = []
-ref_songs_musdb = []
-for song_name in os.listdir(path_to_reference_musdb):
-    # Folder containing the tracks of the song
-    path_to_song = os.path.join(path_to_reference_musdb, song_name)
-    if not os.path.isdir(path_to_song):
-        continue
-    temp_tracks = []
-    temp_labels = []
-    for fname in os.listdir(path_to_song):
-        # It should be a wavfile
-        if not fname.endswith('.wav'):
-            continue
-        label = fname.split('.')[0]
-        path_to_track = os.path.join(path_to_song, fname)
-        track_audio, _ = librosa.load(path_to_track, sr=sr)
-        temp_tracks.append(track_audio)
-        temp_labels.append(label)
+# # Load reference tracks from MUSDB
+# path_to_reference_musdb = './data/audio_for_separation/full_musdb_tracks/'
+# ref_tracks_musdb = []
+# ref_labels_musdb = []
+# ref_songs_musdb = []
+# for song_name in os.listdir(path_to_reference_musdb):
+#     # Folder containing the tracks of the song
+#     path_to_song = os.path.join(path_to_reference_musdb, song_name)
+#     if not os.path.isdir(path_to_song):
+#         continue
+#     temp_tracks = []
+#     temp_labels = []
+#     for fname in os.listdir(path_to_song):
+#         # It should be a wavfile
+#         if not fname.endswith('.wav'):
+#             continue
+#         label = fname.split('.')[0]
+#         path_to_track = os.path.join(path_to_song, fname)
+#         track_audio, _ = librosa.load(path_to_track, sr=sr)
+#         temp_tracks.append(track_audio)
+#         temp_labels.append(label)
     
-    # Sort tracks in alphabetical order
-    temp_tracks = np.array(temp_tracks)
-    temp_labels = np.array(temp_labels)
-    track_order = np.argsort(temp_labels)
-    temp_tracks = temp_tracks[track_order]
-    temp_labels = temp_labels[track_order]
+#     # Sort tracks in alphabetical order
+#     temp_tracks = np.array(temp_tracks)
+#     temp_labels = np.array(temp_labels)
+#     track_order = np.argsort(temp_labels)
+#     temp_tracks = temp_tracks[track_order]
+#     temp_labels = temp_labels[track_order]
 
-    ref_tracks_musdb.append(temp_tracks)
-    ref_labels_musdb.append(temp_labels)
-    ref_songs_musdb.append(song_name)
+#     ref_tracks_musdb.append(temp_tracks)
+#     ref_labels_musdb.append(temp_labels)
+#     ref_songs_musdb.append(song_name)
 
-# Load estimated tracks from MUSDB
-path_to_estimates_musdb = './data/audio_for_separation/estimated_full_musdb/htdemucs/'
-est_tracks_musdb = []
-est_labels_musdb = []
-est_songs_musdb = []
-for song_name in os.listdir(path_to_estimates_musdb):
-    song_index = [idx for idx, item in enumerate(ref_songs_musdb) if item == song_name]
-    # Continue if the song does not exists
-    if len(song_index) == 0:
-        continue
-    song_index = song_index[0]
-    temp_tracks = []
-    temp_labels = []
+# # Load estimated tracks from MUSDB
+# path_to_estimates_musdb = './data/audio_for_separation/estimated_full_musdb/htdemucs/'
+# est_tracks_musdb = []
+# est_labels_musdb = []
+# est_songs_musdb = []
+# for song_name in os.listdir(path_to_estimates_musdb):
+#     song_index = [idx for idx, item in enumerate(ref_songs_musdb) if item == song_name]
+#     # Continue if the song does not exists
+#     if len(song_index) == 0:
+#         continue
+#     song_index = song_index[0]
+#     temp_tracks = []
+#     temp_labels = []
 
-    # Folder containing the estimated tracks of the song
-    path_to_song = os.path.join(path_to_estimates_musdb, song_name)
-    for fname in os.listdir(path_to_song):
-        if not fname.endswith('.wav'):
-            continue
-        label = fname.split('.')[0]
-        if label in track_list_musdb:
-            path_to_track = os.path.join(path_to_song, fname)
-            track_audio, _ = librosa.load(path_to_track, sr=sr)
-            temp_tracks.append(track_audio)
-            temp_labels.append(label)
+#     # Folder containing the estimated tracks of the song
+#     path_to_song = os.path.join(path_to_estimates_musdb, song_name)
+#     for fname in os.listdir(path_to_song):
+#         if not fname.endswith('.wav'):
+#             continue
+#         label = fname.split('.')[0]
+#         if label in track_list_musdb:
+#             path_to_track = os.path.join(path_to_song, fname)
+#             track_audio, _ = librosa.load(path_to_track, sr=sr)
+#             temp_tracks.append(track_audio)
+#             temp_labels.append(label)
     
-    # Sort tracks in alphabetical order
-    temp_tracks = np.array(temp_tracks)
-    temp_labels = np.array(temp_labels)
-    track_order = np.argsort(temp_labels)
-    temp_tracks = temp_tracks[track_order]
-    temp_labels = temp_labels[track_order]
+#     # Sort tracks in alphabetical order
+#     temp_tracks = np.array(temp_tracks)
+#     temp_labels = np.array(temp_labels)
+#     track_order = np.argsort(temp_labels)
+#     temp_tracks = temp_tracks[track_order]
+#     temp_labels = temp_labels[track_order]
 
-    est_tracks_musdb.append(temp_tracks)
-    est_labels_musdb.append(temp_labels)
-    est_songs_musdb.append(song_name)
+#     est_tracks_musdb.append(temp_tracks)
+#     est_labels_musdb.append(temp_labels)
+#     est_songs_musdb.append(song_name)
 
-# SDR evaluation
-path_to_csv = './output/evaluation_results_musdb.csv'
-results_csv = open(path_to_csv, 'w')
-csv_writer = csv.writer(results_csv)
+# # SDR evaluation
+# path_to_csv = './output/evaluation_results_musdb.csv'
+# results_csv = open(path_to_csv, 'w')
+# csv_writer = csv.writer(results_csv)
 
-# Write the header on the CSV file
-header = ['song_name'] + [f'sdr_{track}' for track in track_list_musdb]
-csv_writer.writerow(header)
+# # Write the header on the CSV file
+# header = ['song_name'] + [f'sdr_{track}' for track in track_list_musdb]
+# csv_writer.writerow(header)
 
-# Iterate over every reference song
-for ref_index, ref_song in enumerate(ref_songs_musdb):
-    # Match the index of the estimated tracks
-    est_index = [idx for idx, item in enumerate(est_songs_musdb) if item == ref_song]
-    est_index = est_index[0]
+# # Iterate over every reference song
+# for ref_index, ref_song in enumerate(ref_songs_musdb):
+#     # Match the index of the estimated tracks
+#     est_index = [idx for idx, item in enumerate(est_songs_musdb) if item == ref_song]
+#     est_index = est_index[0]
 
-    # Scale-invariant SDR
-    sdr, _, _, _ = si_bss_eval_sources(ref_tracks_musdb[ref_index], est_tracks_musdb[est_index])
+#     # Scale-invariant SDR
+#     sdr, _, _, _ = si_bss_eval_sources(ref_tracks_musdb[ref_index], est_tracks_musdb[est_index])
 
-    # SDR values for each track in the song
-    sdr_values = [sdr[src_index] for src_index, _ in enumerate(ref_labels_musdb[ref_index])]
-    csv_row = np.concatenate(([ref_song], sdr_values))
-    csv_writer.writerow(csv_row)
+#     # SDR values for each track in the song
+#     sdr_values = [sdr[src_index] for src_index, _ in enumerate(ref_labels_musdb[ref_index])]
+#     csv_row = np.concatenate(([ref_song], sdr_values))
+#     csv_writer.writerow(csv_row)
 
-results_csv.close()
+# results_csv.close()
 
 # Evaluation for the EgoMusic data set
 
@@ -176,7 +177,7 @@ for song_name in os.listdir(path_to_estimates_egomusic):
         if not fname.endswith('.wav'):
             continue
         label = fname.split('.')[0]
-        if label in track_list_demucs:
+        if label in ref_labels_egomusic[song_index]:
             path_to_track = os.path.join(path_to_song, fname)
             track_audio, _ = librosa.load(path_to_track, sr=sr)
             temp_tracks.append(track_audio)
