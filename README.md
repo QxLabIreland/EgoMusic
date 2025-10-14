@@ -9,7 +9,7 @@ the 33rd ACM International Conference on Multimedia (MM ’25), October 27–31,
 1. Install a recent version of [ffmpeg](https://ffmpeg.org/download.html).
 2. Install the required packages by running `pip install -r requirements.txt`.
 3. Install [VISQOL](https://github.com/google/visqol) by following the instructions on its GitHub page.
-4. Download the EgoMusic data set by running `python -m egomusic.download_egomusic`. You need at least 70 GB of disk space. 
+4. Download the EgoMusic data set by running `python -m egomusic.download_egomusic`. You need at least 70 GB of disk space. Alternatively, you can download the data set on [Zenodo](https://zenodo.org/records/16753794) and place the files on `./data/EgoMusic/`.
 
 ## Audio Quality Objective Tests
 
