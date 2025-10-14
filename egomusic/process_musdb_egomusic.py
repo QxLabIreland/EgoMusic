@@ -1,4 +1,5 @@
 import librosa
+import shutil
 from egomusic.utils import *
 from scipy.io import wavfile
 
@@ -9,8 +10,33 @@ sr = 44100
 path_to_output_audio = './data/audio_for_separation/'
 
 # Process MUSDB data set for separation
-path_to_musdb = './data/EgoMusic'
+path_to_musdb = './data/musdb18/test/'
 
+for musdb_song in os.listdir(path_to_musdb):
+    # Obtain the mixture and the tracks for this song
+    path_to_musdb_song = os.path.join(path_to_musdb, musdb_song)
+
+    for fname in os.listdir(path_to_musdb_song):
+        if fname == 'mixture.wav':
+            # Copy mixtures for source separation
+            src_path_to_reference_audio = os.path.join(path_to_musdb_song, fname)
+            dst_path_to_mixtures = os.path.join(path_to_output_audio, 'full_musdb')
+
+            # Create directory if it does not exists
+            os.makedirs(dst_path_to_mixtures, exist_ok=True)
+
+            dst_path_to_reference_audio = os.path.join(dst_path_to_mixtures, f'{musdb_song}.wav')
+            shutil.copy(src_path_to_reference_audio, dst_path_to_reference_audio)
+        else:
+            # Copy tracks
+            src_path_to_track = os.path.join(path_to_musdb_song, fname)
+            dst_path_to_tracks = os.path.join(path_to_output_audio, 'full_musdb_tracks', musdb_song)
+
+            # Create directory if it does not exists
+            os.makedirs(dst_path_to_tracks, exist_ok=True)
+
+            dst_path_to_track = os.path.join(dst_path_to_tracks, fname)
+            shutil.copy(src_path_to_track, dst_path_to_track)
 
 # Process full EgoMusic data set for separation
 path_to_egomusic = './data/EgoMusic'
