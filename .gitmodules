@@ -1,4 +1,0 @@
-[submodule "visqol"]
-	path = visqol
-	url = https://github.com/google/visqol.git
-	branch = master

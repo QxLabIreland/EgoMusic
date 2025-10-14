@@ -8,6 +8,10 @@ sr = 44100
 # Save separation files here
 path_to_output_audio = './data/audio_for_separation/'
 
+# Process MUSDB data set for separation
+path_to_musdb = './data/EgoMusic'
+
+
 # Process full EgoMusic data set for separation
 path_to_egomusic = './data/EgoMusic'
 sessions = ['session-1-instruments-2', 'session-2-instruments-3', 'session-3-instruments-4']

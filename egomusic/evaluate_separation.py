@@ -2,7 +2,6 @@ import os
 import numpy as np
 import librosa
 import csv
-import sounddevice as sd
 from fast_bss_eval import si_bss_eval_sources
 
 # Sampling rate

@@ -49,13 +49,13 @@ for session in sessions:
             if not os.path.exists(path_to_reference_output):
                 os.makedirs(path_to_reference_output)
 
-            # # Save wav file
-            # path_to_reference_output_fname = os.path.join(path_to_reference_output, reference_output_fname)
-            # wavfile.write(path_to_reference_output_fname, sr, float32_to_int16(reference_snippet))
+            # Save wav file
+            path_to_reference_output_fname = os.path.join(path_to_reference_output, reference_output_fname)
+            wavfile.write(path_to_reference_output_fname, sr, float32_to_int16(reference_snippet))
 
-            # # Normalise to -30 LUFS using ffmpeg-normalize
-            # subprocess.run(['ffmpeg-normalize', path_to_reference_output_fname, '-o', path_to_reference_output_fname, '-f', '--keep-loudness-range-target', '-t', '-30.0'])
-            # print(f'Normalised successfully to {path_to_reference_output_fname}.')
+            # Normalise to -30 LUFS using ffmpeg-normalize
+            subprocess.run(['ffmpeg-normalize', path_to_reference_output_fname, '-o', path_to_reference_output_fname, '-f', '--keep-loudness-range-target', '-t', '-30.0'])
+            print(f'Normalised successfully to {path_to_reference_output_fname}.')
 
             # # Obtain test segments from Aria glasses
             # for aria_loc in aria_locs:
