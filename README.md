@@ -13,8 +13,8 @@ the 33rd ACM International Conference on Multimedia (MM ’25), October 27–31,
 
 ## Audio Quality Objective Tests
 
-1. Prepare the audio files to employ VISQOL by running `python -m egomusic.prepare_visqol_files.
-2. Generate the CSV file for batch processing of VISQOL by running `python -m csv_for_visqol`. The CSV file should be saved in `./output/input_audio_files.csv`.
+1. Prepare the audio files for employing VISQOL by running `python -m egomusic.prepare_visqol_files`.
+2. Generate the CSV file for batch processing of VISQOL by running `python -m egomusic.csv_for_visqol`. The CSV file should be saved in `./output/input_audio_files.csv`.
 3. Run VISQOL by invoking the following command: `path/to/visqol/bazel-bin/visqol --batch_input_csv "./output/input_audio_files.csv" --results_csv "./output/results_audio_files.csv"`.
 4. Obtain the objective test results by running `python -m egomusic.visqol_results`.
 
@@ -24,8 +24,8 @@ the 33rd ACM International Conference on Multimedia (MM ’25), October 27–31,
 2. Prepare the files for separation by running `python -m egomusic.process_musdb_egomusic` and `python -m egomusic.separation_files`.
 3. Employ music source separation using `demucs` by uploading the files in your Google Drive and running `./egomusic/source_separation.ipynb` on Google Colab.
 4. Download the separated files and place them on `./data/audio_for_separation/`.
-5. To evaluate the SDR on MUSDB and EgoMusic, run `python -m egomusic.evaluate_separation
-6. To run audio quality objective tests on the stems, prepare the audio files for VISQOL analysis by running `python -m egomusic.process_separated_files.
+5. To evaluate the SDR on MUSDB and EgoMusic, run `python -m egomusic.evaluate_separation`.
+6. To run audio quality objective tests on the stems, prepare the audio files for VISQOL analysis by running `python -m egomusic.process_separated_files`.
 7. Generate the CSV file for batch processing by running `python -m csv_for_visqol_separated`. The CSV file will be saved in `./output/input_separated_files.csv`.
 8. Run VISQOL by invoking the command `path/to/visqol/bazel-bin/visqol --batch_input_csv "./output/input_separated_files.csv" --results_csv "./output/results_separated_files.csv"`.
 9. Obtain the objective test results by running `python -m egomusic.visqol_results_separated`.
