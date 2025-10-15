@@ -38,7 +38,7 @@ def float32_to_int16(data):
     output_data = (data * 32767).astype(np.int16)
     return output_data
 
-def delay_sum(mic_array, samplerate, n_fft=1200, normalize=True, silence_dur=0.5):
+def delay_sum(mic_array, samplerate, n_fft=1200, normalise=True, silence_dur=0.5):
 
     mic_array = mic_array.T     # [time, channels]
     mic_array = torch.tensor(mic_array)
@@ -60,7 +60,7 @@ def delay_sum(mic_array, samplerate, n_fft=1200, normalize=True, silence_dur=0.5
     beamformed = beamformed.squeeze()
     beamformed = beamformed.numpy()
 
-    if normalize:
+    if normalise:
         beamformed = normalise_audio(beamformed)
     
     if silence_dur > 0.0:

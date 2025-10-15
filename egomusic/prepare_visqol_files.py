@@ -55,35 +55,61 @@ for session in sessions:
 
             # Normalise to -30 LUFS using ffmpeg-normalize
             subprocess.run(['ffmpeg-normalize', path_to_reference_output_fname, '-o', path_to_reference_output_fname, '-f', '--keep-loudness-range-target', '-t', '-30.0'])
-            print(f'Normalised successfully to {path_to_reference_output_fname}.')
+            print(f'Wrote successfully to {path_to_reference_output_fname}.')
 
-            # # Obtain test segments from Aria glasses
-            # for aria_loc in aria_locs:
-            #     loc = aria_loc.split('-')[-1]
-            #     path_to_aria_loc = os.path.join(path_to_session_song, aria_loc, 'audio')
+            # Obtain test segments from Aria glasses
+            for aria_loc in aria_locs:
+                loc = aria_loc.split('-')[-1]
+                path_to_aria_loc = os.path.join(path_to_session_song, aria_loc, 'audio')
 
-            #     # Get all wav files and put in a mic_array
-            #     aria_audio_fnames = [fname for fname in os.listdir(path_to_aria_loc) if fname.endswith('.wav')]
-            #     aria_audio_fnames.sort()
+                # Get all wav files and put in a mic_array
+                aria_audio_fnames = [fname for fname in os.listdir(path_to_aria_loc) if fname.endswith('.wav')]
+                aria_audio_fnames.sort()
+
+                # Get the aria id, session id, and song id from the filename
+                aria_session_song_id = aria_audio_fnames[0].rsplit('_', 1)[0]
                 
-            #     mic_array = []
-            #     for fname in aria_audio_fnames:
-            #         print(fname)
-            #         path_to_aria_audio = os.path.join(path_to_aria_loc, fname)
-            #         mic_audio, _ = librosa.load(path_to_aria_audio, sr=sr)
-            #         mic_audio_snippet = extract_snippet(mic_audio, sr, duration, offset, silence_dur=0.0, normalise=False)
-            #         mic_array.append(mic_audio_snippet)
-            #     mic_array = np.array(mic_array)
+                mic_array = []
+                for fname in aria_audio_fnames:
+                    path_to_aria_audio = os.path.join(path_to_aria_loc, fname)
+                    mic_audio, _ = librosa.load(path_to_aria_audio, sr=sr)
+                    mic_audio_snippet = extract_snippet(mic_audio, sr, duration, offset, silence_dur=0.0, normalise=False)
+                    mic_array.append(mic_audio_snippet)
+                mic_array = np.array(mic_array)
 
-            #     mono_audio = mic_array[1]   # Select mic1 from the Aria Glasses
-            #     beam3_audio = delay_sum(mic_array[np.array([1, 5, 6]), :], 
-            #                             sr, n_fft=1200, normalise=True, silence_dur=0.5)    # Beamforming with 3 mics
-            #     beam5_audio = delay_sum(mic_array[np.array([1, 3, 4, 5, 6]), :], 
-            #                             sr, n_fft=1200, normalise=True, silence_dur=0.5)    # Beamforming with 5 mics
-            #     beam7_audio = delay_sum(mic_array, 
-            #                             sr, n_fft=1200, normalise=True, silence_dur=0.5)    # Beamforming with 7 mics
+                mono_audio = mic_array[1]   # Select mic1 from the Aria Glasses
+                mono_audio = add_silence(mono_audio, sr, silence_dur=0.5)
+                beam3_audio = delay_sum(mic_array[np.array([1, 5, 6]), :], 
+                                        sr, n_fft=1200, normalise=True, silence_dur=0.5)    # Beamforming with 3 mics
+                beam5_audio = delay_sum(mic_array[np.array([1, 3, 4, 5, 6]), :], 
+                                        sr, n_fft=1200, normalise=True, silence_dur=0.5)    # Beamforming with 5 mics
+                beam7_audio = delay_sum(mic_array, 
+                                        sr, n_fft=1200, normalise=True, silence_dur=0.5)    # Beamforming with 7 mics
                 
-            #     # Save to groups mono, beam3, beam5, beam7
-            #     for group in groups:
-            #         path_to_group = os.path.join(path_to_aria_loc, 'visqol_data', group)
+                path_to_visqol_data = os.path.join(path_to_session_song, aria_loc, 'visqol_data')
+                
+                # Save mono audio
+                path_to_mono_audio = os.path.join(path_to_visqol_data, 'mono', f'{aria_session_song_id}_mono-{sample_number+1}.wav')
+                wavfile.write(path_to_mono_audio, sr, float32_to_int16(mono_audio))
+                subprocess.run(['ffmpeg-normalize', path_to_mono_audio, '-o', path_to_mono_audio, '-f', '--keep-loudness-range-target', '-t', '-30.0'])
+                print(f'Wrote successfully to {path_to_mono_audio}.')
+
+                # Save mono audio
+                path_to_beam3_audio = os.path.join(path_to_visqol_data, 'beam3', f'{aria_session_song_id}_beam3-{sample_number+1}.wav')
+                wavfile.write(path_to_beam3_audio, sr, float32_to_int16(beam3_audio))
+                subprocess.run(['ffmpeg-normalize', path_to_beam3_audio, '-o', path_to_beam3_audio, '-f', '--keep-loudness-range-target', '-t', '-30.0'])
+                print(f'Wrote successfully to {path_to_beam3_audio}.')
+
+                # Save beam5 audio
+                path_to_beam5_audio = os.path.join(path_to_visqol_data, 'beam5', f'{aria_session_song_id}_beam5-{sample_number+1}.wav')
+                wavfile.write(path_to_beam5_audio, sr, float32_to_int16(beam5_audio))
+                subprocess.run(['ffmpeg-normalize', path_to_beam5_audio, '-o', path_to_beam5_audio, '-f', '--keep-loudness-range-target', '-t', '-30.0'])
+                print(f'Wrote successfully to {path_to_beam5_audio}.')
+
+                # Save beam7 audio
+                path_to_beam7_audio = os.path.join(path_to_visqol_data, 'beam7', f'{aria_session_song_id}_beam7-{sample_number+1}.wav')
+                wavfile.write(path_to_beam7_audio, sr, float32_to_int16(beam7_audio))
+                subprocess.run(['ffmpeg-normalize', path_to_beam7_audio, '-o', path_to_beam7_audio, '-f', '--keep-loudness-range-target', '-t', '-30.0'])
+                print(f'Wrote successfully to {path_to_beam7_audio}.')
+
 
