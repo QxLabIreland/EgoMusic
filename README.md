@@ -27,5 +27,5 @@ the 33rd ACM International Conference on Multimedia (MM ’25), October 27–31,
 5. To evaluate the SDR on MUSDB and EgoMusic, run `python -m egomusic.evaluate_separation`.
 6. To run audio quality objective tests on the stems, prepare the audio files for VISQOL analysis by running `python -m egomusic.process_separated_files`.
 7. Generate the CSV file for batch processing by running `python -m csv_for_visqol_separated`. The CSV file will be saved in `./output/input_separated_files.csv`.
-8. Run VISQOL by invoking the command `path/to/visqol/bazel-bin/visqol --batch_input_csv "./output/input_separated_files.csv" --results_csv "./output/results_separated_files.csv"`.
+8. Run VISQOL by invoking the following command on the VISQOL root directory: `./bazel-bin/visqol --batch_input_csv "path/to/egomusic/output/input_separated_files.csv" --results_csv "path/to/egomusic/output/results_separated_files.csv"`.
 9. Obtain the objective test results by running `python -m egomusic.visqol_results_separated`.
