@@ -15,7 +15,7 @@ the 33rd ACM International Conference on Multimedia (MM ’25), October 27–31,
 
 1. Prepare the audio files for employing VISQOL by running `python -m egomusic.prepare_visqol_files`.
 2. Generate the CSV file for batch processing of VISQOL by running `python -m egomusic.csv_for_visqol`. The CSV file should be saved in `./output/input_audio_files.csv`.
-3. Run VISQOL by invoking the following command: `path/to/visqol/bazel-bin/visqol --batch_input_csv "./output/input_audio_files.csv" --results_csv "./output/results_audio_files.csv"`.
+3. Run VISQOL by invoking the following command on the VISQOL root directory: `./bazel-bin/visqol --batch_input_csv "path/to/egomusic/output/input_audio_files.csv" --results_csv "path/to/egomusic/output/results_audio_files.csv"`.
 4. Obtain the objective test results by running `python -m egomusic.visqol_results`.
 
 ## Music Source Separation
