@@ -22,7 +22,7 @@ the 33rd ACM International Conference on Multimedia (MM ’25), October 27–31,
 
 1. Download the MUSDB18-HQ data set [here](https://zenodo.org/records/3338373) and save it to `./data/musdb18/`. We only need the test set (50 songs) so you can delete the train folder if you want.
 2. Prepare the files for separation by running `python -m egomusic.process_musdb_egomusic` and `python -m egomusic.separation_files`.
-3. Employ music source separation using `demucs` by uploading the files in your Google Drive and running `./egomusic/source_separation.ipynb` on Google Colab.
+3. Employ music source separation using *demucs* by uploading the files in your Google Drive and running `./egomusic/source_separation.ipynb` on Google Colab.
 4. Download the separated files and place them on `./data/audio_for_separation/`.
 5. To evaluate the SDR on MUSDB and EgoMusic, run `python -m egomusic.evaluate_separation`.
 6. To run audio quality objective tests on the stems, prepare the audio files for VISQOL analysis by running `python -m egomusic.process_separated_files`.
